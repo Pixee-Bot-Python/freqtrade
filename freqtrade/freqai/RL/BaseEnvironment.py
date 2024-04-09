@@ -1,5 +1,4 @@
 import logging
-import random
 from abc import abstractmethod
 from enum import Enum
 from typing import List, Optional, Type, Union
@@ -12,6 +11,7 @@ from gymnasium.utils import seeding
 from pandas import DataFrame
 
 from freqtrade.exceptions import OperationalException
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -197,7 +197,7 @@ class BaseEnvironment(gym.Env):
         if self.starting_point is True:
             if self.rl_config.get('randomize_starting_position', False):
                 length_of_data = int(self._end_tick / 4)
-                start_tick = random.randint(self.window_size + 1, length_of_data)
+                start_tick = secrets.SystemRandom().randint(self.window_size + 1, length_of_data)
                 self._start_tick = start_tick
             self._position_history = (self._start_tick * [None]) + [self._position]
         else:

@@ -2,7 +2,6 @@
 Shuffle pair list filter
 """
 import logging
-import random
 from typing import Any, Dict, List, Literal
 
 from freqtrade.constants import Config
@@ -11,6 +10,7 @@ from freqtrade.exchange import timeframe_to_seconds
 from freqtrade.exchange.types import Tickers
 from freqtrade.plugins.pairlist.IPairList import IPairList, PairlistParameter
 from freqtrade.util.periodic_cache import PeriodicCache
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class ShuffleFilter(IPairList):
             self._seed = pairlistconfig.get('seed')
             logger.info(f"Backtesting mode detected, applying seed value: {self._seed}")
 
-        self._random = random.Random(self._seed)
+        self._random = secrets.SystemRandom().Random(self._seed)
         self._shuffle_freq: ShuffleValues = pairlistconfig.get('shuffle_frequency', 'candle')
         self.__pairlist_cache = PeriodicCache(
                     maxsize=1000, ttl=timeframe_to_seconds(self._config['timeframe']))

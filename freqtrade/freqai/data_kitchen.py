@@ -1,7 +1,6 @@
 import copy
 import inspect
 import logging
-import random
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,6 +21,7 @@ from freqtrade.exceptions import OperationalException
 from freqtrade.exchange import timeframe_to_seconds
 from freqtrade.strategy import merge_informative_pair
 from freqtrade.strategy.interface import IStrategy
+import secrets
 
 
 SECONDS_IN_DAY = 86400
@@ -168,8 +168,8 @@ class FreqaiDataKitchen:
             train_weights = weights
 
         if feat_dict["shuffle_after_split"]:
-            rint1 = random.randint(0, 100)
-            rint2 = random.randint(0, 100)
+            rint1 = secrets.SystemRandom().randint(0, 100)
+            rint2 = secrets.SystemRandom().randint(0, 100)
             train_features = train_features.sample(
                 frac=1, random_state=rint1).reset_index(drop=True)
             train_labels = train_labels.sample(frac=1, random_state=rint1).reset_index(drop=True)

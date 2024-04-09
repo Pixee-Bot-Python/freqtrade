@@ -5,7 +5,6 @@ This module contains the hyperopt logic
 """
 
 import logging
-import random
 import sys
 import warnings
 from datetime import datetime, timezone
@@ -36,6 +35,7 @@ from freqtrade.optimize.hyperopt_tools import (HyperoptStateContainer, HyperoptT
                                                hyperopt_serializer)
 from freqtrade.optimize.optimize_reports import generate_strategy_stats
 from freqtrade.resolvers.hyperopt_resolver import HyperOptLossResolver
+import secrets
 
 
 # Suppress scikit-learn FutureWarnings from skopt
@@ -440,7 +440,7 @@ class Hyperopt:
                         wrap_non_picklable_objects(self.generate_optimizer))(v) for v in asked)
 
     def _set_random_state(self, random_state: Optional[int]) -> int:
-        return random_state or random.randint(1, 2**16 - 1)
+        return random_state or secrets.SystemRandom().randint(1, 2**16 - 1)
 
     def advise_and_trim(self, data: Dict[str, DataFrame]) -> Dict[str, DataFrame]:
         preprocessed = self.backtesting.strategy.advise_all_indicators(data)
