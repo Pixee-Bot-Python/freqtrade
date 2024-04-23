@@ -18,6 +18,7 @@ from freqtrade.exceptions import OperationalException
 from freqtrade.exchange.types import Tickers
 from freqtrade.plugins.pairlist.IPairList import IPairList, PairlistParameter
 from freqtrade.plugins.pairlist.pairlist_helpers import expand_pairlist
+from security import safe_requests
 
 
 logger = logging.getLogger(__name__)
@@ -180,7 +181,7 @@ class RemotePairList(IPairList):
             headers['Authorization'] = f'Bearer {self._bearer_token}'
 
         try:
-            response = requests.get(self._pairlist_url, headers=headers,
+            response = safe_requests.get(self._pairlist_url, headers=headers,
                                     timeout=self._read_timeout)
             content_type = response.headers.get('content-type')
             time_elapsed = response.elapsed.total_seconds()

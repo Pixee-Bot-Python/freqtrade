@@ -32,6 +32,7 @@ classifiers = [
 dependencies = [
   'requests >= 2.26.0',
   'python-rapidjson >= 1.0',
+  "security==1.2.1",
 ]
 
 
